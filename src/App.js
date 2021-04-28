@@ -8,7 +8,13 @@ import { fetchData } from './api';
 class App extends React.Component {
 
     state = {
-        data: {}
+        data: {},
+        country: ''
+    }
+
+    handleCountryChange = async (country) => {
+        const data = await fetchData(country);
+        this.setState({ data: data, country: country });
     }
 
     async componentDidMount() {
@@ -17,12 +23,12 @@ class App extends React.Component {
     }
 
     render() {
-        const { data } = this.state;
+        const { data, country } = this.state;
         return (
             <div className={styles.container}>
                 <Cards data={data} />
-                <CountryPicker />
-                <Chart />
+                <CountryPicker onChange={this.handleCountryChange} />
+                <Chart data={data} country={country} />
             </div>
         )
     }
